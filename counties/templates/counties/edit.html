@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'counties/style.css' %}">
+        <link rel="shortcut icon" type="image/png" href="{% static 'counties/images/favicon.png' %}">
+        <title>{{ admin.first_name }} {{ admin.last_name }}</title>
+    </head>
+    <body>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li class="nav_li"><a href="{% url 'counties:all_admins' %}">Administratori</a></li>
+                    <li class="nav_li"><a href="{% url 'counties:index' %}">Județe</a></li>
+                    <li class="nav_li"><a href="{% url 'counties:logout' %}">Logout</a></li>
+                </ul>
+            </nav>
+            <main>
+                <header>
+                    <h1>Edit {{ admin.last_name }} {{ admin.first_name }} </h1>
+                </header>
+                {% if error_message %}
+                    <h2 class="oops_h2">{{ error_message }}</h2>
+                {% endif %}
+                <form action="{% url 'counties:change' admin.last_name admin.first_name %}" method="post">
+                    {% csrf_token %}
+                    <fieldset>
+                        <label for="phone">Număr de telefon:</label><br>
+                        <input id="phone" name="phone" value="{{ admin.phone }}"><br>
+                        <label for="email">Adresa de email:</label><br>
+                        <input id="email" name="email" value="{{ admin.email }}"><br>
+                        <label for="state">Stare:</label><br>
+                        {% if admin.state == "activ" %}
+                            <input type="radio" id="active_radio" name="state" value="activ" checked>
+                            <label for="active_radio">Activ</label>
+                            <input type="radio" id="leave_radio" name="state" value="concediu">
+                            <label for="leave_radio">Concediu</label><br>
+                        {% else %}
+                            <input type="radio" id="active_radio" name="state" value="activ">
+                            <label for="active_radio">Activ</label>
+                            <input type="radio" id="leave_radio" name="state" value="concediu" checked>
+                            <label for="leave_radio">Concediu</label><br>
+                        {% endif %}
+                        <label for="county_table">Județe de administrat:</label><br>
+                        <table class="county_table" id="county_table">
+                            <tr>
+                                {% for county in county_list %}
+                                    {% if forloop.counter0|divisibleby:5 %}
+                                        </tr>
+                                        <tr>
+                                    {% endif %}
+                                    <td>
+                                        {% if county in admin.county_set.all %}
+                                            <input type="checkbox" id={{ county.county_name }} name="county" value="{{ county.county_name }}" checked>
+                                        {% elif county not in admin.county_set.all %}
+                                            <input type="checkbox" id={{ county.county_name }} name="county" value="{{ county.county_name }}">
+                                        {% endif %}
+                                            <label for=name="county"> {{ county.county_name }}</label>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        </table>
+                        <input type="submit" value="Edit">
+                    </fieldset>
+                </form>
+            </main>
+        </div>
+    </body>
+</html>

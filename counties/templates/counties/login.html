@@ -1,0 +1,42 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'counties/style.css' %}">
+        <link rel="shortcut icon" type="image/png" href="{% static 'counties/images/favicon.png' %}">
+        <title>Login</title>
+    </head>
+    <body>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li class="nav_li"><a href="{% url 'counties:all_admins' %}">Administratori</a></li>
+                    <li class="nav_li"><a href="{% url 'counties:index' %}">Județe</a></li>
+                </ul>
+            </nav>
+            <main>
+                {% if error_message %}
+                    <header class="oops_header">
+                        <h1>{{ error_message }}</h1>
+                    </header>
+                {% else %}
+                    <header>
+                        <h1>Login</h1>
+                    </header>
+                {% endif %}
+                <form action="{% url 'counties:sing_in'%}" method="post">
+                    {% csrf_token %}
+                    <fieldset>
+                        <label for="username">Username:</label><br>
+                        <input type="text" id="username" name="username"><br>
+                        <label for="password">Parola:</label><br>
+                        <input type="password" id="password" name="password"><br>
+                        <input type="submit" value="Login">
+                    </fieldset>
+                </form>
+            </main>
+        </div>
+    </body>
+</html>

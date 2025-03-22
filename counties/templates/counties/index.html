@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'counties/style.css' %}">
+        <link rel="shortcut icon" type="image/png" href="{% static 'counties/images/favicon.png' %}">
+        <title>Județele României</title>
+    </head>
+    <body>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li class="nav_li"><a href="{% url 'counties:all_admins' %}">Administratori</a></li>
+                    {% if user_state %}
+                        <li class="nav_li"><a href="{% url 'counties:logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="nav_li"><a href="{% url 'counties:login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <main>
+                {% if unsupervised_counties|length == 1 %}
+                    <header class="oops_header">
+                        <h1>
+                            Județul
+                            {% for county in unsupervised_counties %}
+                                {{ county }}
+                            {% endfor %}
+                            nu este supervizat.
+                        </h1>
+                    </header>
+                {% elif unsupervised_counties|length > 1 %}
+                    <header class="oops_header">
+                        <h1>
+                            Județele
+                            {% for county in unsupervised_counties %}
+                                {% if forloop.first %}
+                                    {{ county }}
+                                {% elif forloop.last %}
+                                    si {{ county }}
+                                {% else %}
+                                    , {{ county }}
+                                {% endif %}
+                            {% endfor %}
+                            nu sunt supervizate.
+                        </h1>
+                    </header>
+                {% endif %}
+                {% if overflowed_counties|length == 1 %}
+                    <header class="oops_header">
+                        <h1>
+                            Județul
+                            {% for county in overflowed_counties %}
+                                {{ county }}
+                            {% endfor %}
+                            are prea mulți supervizori principali.
+                        </h1>
+                    </header>
+                {% elif overflowed_counties|length > 1 %}
+                    <header class="oops_header">
+                        <h1>
+                            Județele
+                            {% for county in overflowed_counties %}
+                                {% if forloop.first %}
+                                    {{ county }}
+                                {% elif forloop.last %}
+                                    si {{ county }}
+                                {% else %}
+                                    , {{ county }}
+                                {% endif %}
+                            {% endfor %}
+                            au prea mulți supervizori principali.
+                        </h1>
+                    </header>
+                {% endif %}
+                <img src="{% static 'counties/images/romania.png' %}" alt="Romania" usemap="#counties">
+                <map name="counties">
+                    <area shape="rect" coords="605,562,621,579" alt="București" href="{% url 'counties:county' 'Bucuresti'%}">
+                    <area shape="rect" coords="608,534,629,552" alt="Ilfov" href="{% url 'counties:county' 'Ilfov'%}">
+                    <area shape="rect" coords="593,459,625,477" alt="Prahova" href="{% url 'counties:county' 'Prahova'%}">
+                    <area shape="rect" coords="688,531,709,549" alt="Ialomița" href="{% url 'counties:county' 'Ialomita'%}">
+                    <area shape="rect" coords="693,568,724,587" alt="Călărași" href="{% url 'counties:county' 'Calarasi'%}">
+                    <area shape="rect" coords="828,578,859,598" alt="Constanța" href="{% url 'counties:county' 'Constanta'%}">
+                    <area shape="rect" coords="873,472,902,492" alt="Tulcea" href="{% url 'counties:county' 'Tulcea'%}">
+                    <area shape="rect" coords="757,459,789,477" alt="Brăila" href="{% url 'counties:county' 'Braila'%}">
+                    <area shape="rect" coords="667,438,696,459" alt="Buzău" href="{% url 'counties:county' 'Buzau'%}">
+                    <area shape="rect" coords="585,595,619,614" alt="Giurgiu" href="{% url 'counties:county' 'Giurgiu'%}">
+                    <area shape="rect" coords="510,606,541,626" alt="Teleorman" href="{% url 'counties:county' 'Teleormaan'%}">
+                    <area shape="rect" coords="437,571,469,591" alt="Olt" href="{% url 'counties:county' 'Olt'%}">
+                    <area shape="rect" coords="352,589,382,607" alt="Dolj" href="{% url 'counties:county' 'Dolj'%}">
+                    <area shape="rect" coords="264,523,302,542" alt="Mehedinți" href="{% url 'counties:county' 'Mehedinti'%}">
+                    <area shape="rect" coords="328,471,358,492" alt="Gorj" href="{% url 'counties:county' 'Gorj'%}">
+                    <area shape="rect" coords="409,447,440,467" alt="Vâlcea" href="{% url 'counties:county' 'Valcea'%}">
+                    <area shape="rect" coords="476,464,506,484" alt="Argeș" href="{% url 'counties:county' 'Arges'%}">
+                    <area shape="rect" coords="534,480,571,498" alt="Dâmbovița" href="{% url 'counties:county' 'Dambovita'%}">
+                    <area shape="rect" coords="767,361,802,379" alt="Galați" href="{% url 'counties:county' 'Galati'%}">
+                    <area shape="rect" coords="681,359,718,377" alt="Vrancea" href="{% url 'counties:county' 'Vrancea'%}">
+                    <area shape="rect" coords="594,344,626,361" alt="Covasna" href="{% url 'counties:county' 'Covasna'%}">
+                    <area shape="rect" coords="512,357,546,377" alt="Brașov" href="{% url 'counties:county' 'Brasov'%}">
+                    <area shape="rect" coords="422,348,452,364" alt="Sibiu" href="{% url 'counties:county' 'Sibiu'%}">
+                    <area shape="rect" coords="346,304,383,326" alt="Alba" href="{% url 'counties:county' 'Alba'%}">
+                    <area shape="rect" coords="288,363,324,380" alt="Hunedoara" href="{% url 'counties:county' 'Hunedoara'%}">
+                    <area shape="rect" coords="197,439,227,459" alt="Caraș-Severin" href="{% url 'counties:county' 'Caras-Severin'%}">
+                    <area shape="rect" coords="119,369,156,391" alt="Timiș" href="{% url 'counties:county' 'Timis'%}">
+                    <area shape="rect" coords="179,288,215,309" alt="Arad" href="{% url 'counties:county' 'Arad'%}">
+                    <area shape="rect" coords="208,189,244,210" alt="Bihor" href="{% url 'counties:county' 'Bihor'%}">
+                    <area shape="rect" coords="346,224,374,243" alt="Cluj" href="{% url 'counties:county' 'Cluj'%}">
+                    <area shape="rect" coords="446,254,483,274" alt="Mureș" href="{% url 'counties:county' 'Mures'%}">
+                    <area shape="rect" coords="545,251,582,273" alt="Harghita" href="{% url 'counties:county' 'Harghita'%}">
+                    <area shape="rect" coords="665,271,702,291" alt="Bacău" href="{% url 'counties:county' 'Bacau'%}">
+                    <area shape="rect" coords="770,256,803,279" alt="Vaslui" href="{% url 'counties:county' 'Vaslui'%}">
+                    <area shape="rect" coords="719,152,746,173" alt="Iași" href="{% url 'counties:county' 'Iasi'%}">
+                    <area shape="rect" coords="624,192,658,209" alt="Neamț" href="{% url 'counties:county' 'Neamt'%}">
+                    <area shape="rect" coords="674,67,704,87" alt="Botoșani" href="{% url 'counties:county' 'Botosani'%}">
+                    <area shape="rect" coords="566,105,602,123" alt="Suceava" href="{% url 'counties:county' 'Suceava'%}">
+                    <area shape="rect" coords="435,147,474,163" alt="Bistrița-Năsăud" href="{% url 'counties:county' 'Bistrita-Nasaud'%}">
+                    <area shape="rect" coords="371,92,417,113" alt="Maramureș" href="{% url 'counties:county' 'Maramures'%}">
+                    <area shape="rect" coords="307,169,336,188" alt="Sălaj" href="{% url 'counties:county' 'Salaj'%}">
+                    <area shape="rect" coords="284,87,323,106" alt="Satu Mare" href="{% url 'counties:county' 'Satu Mare'%}">
+                </map>
+            </main>
+        </div>
+    </body>
+</html>

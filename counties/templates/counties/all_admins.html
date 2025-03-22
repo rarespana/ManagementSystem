@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" type="image/png" href="{% static 'counties/images/favicon.png' %}">
+        <link rel="stylesheet" href="{% static 'counties/style.css' %}">
+        <title>Toți administratorii</title>
+    </head>
+    <body>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li class="nav_li"><a href="{% url 'counties:index' %}">Județe</a></li>
+                    {% if user_state %}
+                        <li class="nav_li"><a href="{% url 'counties:logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="nav_li"><a href="{% url 'counties:login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <main>
+                <header>
+                    <h1>Aceștia sunt toți administratorii</h1>
+                </header>   
+                <table>
+                    <tr>
+                        <th>Nume</th>
+                        <th>Prenume</th>
+                        <th>Număr de telefon</th>
+                        <th>Email</th>
+                        <th>Județe</th>
+                        <th>Stare</th>
+                    </tr>
+                    {% for admin in admin_list %}
+                        <tr>
+                            {% if admin.last_name == current_user.last_name and admin.first_name == current_user.first_name %}
+                                <td><a href="{% url 'counties:edit' admin.last_name admin.first_name %}"> {{ admin.last_name }} </a></td>
+                            {% else %}    
+                                <td>{{ admin.last_name }}</td>
+                            {% endif %}
+                            <td>{{ admin.first_name }}</td>
+                            <td>{{ admin.phone }}</td>
+                            <td>{{ admin.email }}</td>                     
+                            <td>
+                                {% for county in admin.county_set.all %}
+                                    {% if forloop.last %}
+                                        {{ county.county_name }}
+                                    {% else %}
+                                        {{ county.county_name }},
+                                    {% endif %}
+                                {% endfor %}    
+                            </td>
+                            <td> {{ admin.state }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </main>
+        </div>
+    </body>
+</html>
