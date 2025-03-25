@@ -59,13 +59,11 @@ def index(request):
 def county(request, county_name):
     user_state = request.user.is_authenticated
     current_user = request.user
-    main_admins = User.objects.filter(state="activ", main_county=county_name)
     admin_list = User.objects.filter(state="activ", county__county_name=county_name).order_by('last_name')
     county_name = get_object_or_404(County, county_name=county_name).county_name
     context = {
         'user_state': user_state,
         'county_name': county_name,
-        'main_admins': main_admins,
         'admin_list': admin_list,
         'current_user': current_user
     }
